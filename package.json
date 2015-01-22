@@ -1,0 +1,34 @@
+{
+  "name": "grunt-niteo-cdbuild",
+  "version": "0.0.1",
+  "description": "A grunt plugin to help facilitate continuous delivery workflows.",
+  "main": "tasks/cdbuild.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NiteoSoftware/grunt-niteo-cdbuild.git"
+  },
+  "engines": {
+    "node": ">0.8.0"
+  },
+  "author": "Niteo Software",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.12.0",
+    "grunt-mocha-test": "^0.12.4",
+    "mocha": "^2.1.0",
+    "should": "^4.4.2"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1.4",
+    "colors": "^1.0.3",
+    "lodash": "^2.4.1",
+    "moment": "^2.8.4",
+    "niteoaws": "0.0.2",
+    "q": "^1.1.2",
+    "string": "^3.0.0"
+  }
+}
