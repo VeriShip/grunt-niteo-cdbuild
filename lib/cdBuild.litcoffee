@@ -57,7 +57,7 @@ grunt.cdbuild
 					if level is @errorLevel.warning
 						grunt.warn message
 					else if level is @errorLevel.error
-						grunt.fail message
+						grunt.fatal message
 				
 *spawnChild*
 
