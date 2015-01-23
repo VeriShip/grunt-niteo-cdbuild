@@ -67,7 +67,7 @@ describe 'grunt.cdBuild', ->
 		it 'should not throw error if current step is not build or setup and level is error', ->
 
 			errorMsg = null
-			grunt.fail = (msg) ->
+			grunt.fatal = (msg) ->
 				errorMsg = msg
 
 			grunt.cdBuild.cdBuildSteps.current = grunt.cdBuild.cdBuildSteps.teardown
@@ -120,17 +120,17 @@ describe 'grunt.cdBuild', ->
 
 			warnMsg.should.equal "Dummy Msg"
 
-		it 'should called grunt.fail if current step is not build or setup and level is error', ->
+		it 'should called grunt.fatal if current step is not build or setup and level is error', ->
 		
-			failMsg = null
-			grunt.fail = (msg) ->
-				failMsg = msg
+			fatalMsg = null
+			grunt.fatal = (msg) ->
+				fatalMsg = msg
 
 			grunt.cdBuild.cdBuildSteps.current = grunt.cdBuild.cdBuildSteps.preSetup
 
 			grunt.cdBuild.errorHandler( grunt.cdBuild.errorLevel.error, "Dummy Msg" )
 
-			failMsg.should.equal "Dummy Msg"
+			fatalMsg.should.equal "Dummy Msg"
 
 	describe 'createJSONStringArray', ->
 
