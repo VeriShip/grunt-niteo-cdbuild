@@ -9,6 +9,8 @@ cdBuild.js
 	niteoaws = require 'niteoaws'
 	S = require 'string'
 	path = require 'path'
+	assert = require 'assert'
+	_ = require 'lodash'
 
 	module.exports = (grunt) ->
 
@@ -225,7 +227,6 @@ grunt.cdbuild
 *cf_createTemplateData*
 
 				cf_createTemplateData: () ->
-
 					data = grunt.option("cloudFormationTemplateData") or { }
 
 					for filePath in @filesSrc
@@ -273,7 +274,7 @@ Properties
 		grunt.option("cd_localSetupTasks", grunt.option("cd_localSetupTasks") || [ 'vagrantUp' ] )
 		grunt.option("cd_localTeardownTasks", grunt.option("cd_localTeardownTasks") || [ 'vagrantTeardown' ] )
 
-		grunt.option("cd_cloudSetupTasks", grunt.option("cd_cloudSetupTasks") || ['cf_createTemplateData', 'cf_createTemplate', 'cf_validateTemplate', 'cf_createStack'] )
+		grunt.option("cd_cloudSetupTasks", grunt.option("cd_cloudSetupTasks") || ['_createTemplateData', '_createTemplate', 'cf_validateTemplate', 'cf_createStack'] )
 		grunt.option("cd_cloudTeardownTasks", grunt.option("cd_cloudTeardownTasks") || ['cf_deleteStack'] )
 
 Build Tasks
@@ -402,6 +403,20 @@ Build Tasks
 		#	cf_deleteStack
 		#	------------------------------------------------------
 		grunt.registerTask 'cf_deleteStack', grunt.cdBuild.tasks.cf_deleteStack
+
+		#	------------------------------------------------------
+		#	_createTemplateData
+		#	------------------------------------------------------
+		grunt.registerTask '_createTemplateData', () ->
+			if not _.isEmpty(grunt.config.get('cf_createTemplateData'))
+				grunt.task.run 'cf_createTemplateData'
+		
+		#	------------------------------------------------------
+		#	_createTemplate
+		#	------------------------------------------------------
+		grunt.registerTask '_createTemplate', () ->
+			if not _.isEmpty(grunt.config.get('cf_createTemplate'))
+				grunt.task.run 'cf_createTemplate'
 
 		#	------------------------------------------------------
 		#	cf_createTemplateData
