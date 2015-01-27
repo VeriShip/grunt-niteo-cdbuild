@@ -97,8 +97,12 @@ grunt.cdbuild
 				
 *generateRunTag*
 
-			generateRunTag: () ->
-				"CDBuild#{moment().format("YYYYMMDDhhmmss")}#{process.env.COMPUTERNAME || process.env.HOSTNAME}"
+			generateRunTag: (m) ->
+				if !m?
+					throw 'You must define a moment.'
+
+				value = process.env.USER ? process.env.USERNAME
+				"CDBuild#{m.format("YYYYMMDDhhmmss")}#{value.replace(/[\W_]+/g, "")}"
 				
 *tasks*
 
@@ -261,7 +265,7 @@ grunt.cdbuild
 Properties
 ----------
 
-		grunt.option("runTag", grunt.option("runTag") || grunt.cdBuild.generateRunTag())
+		grunt.option("runTag", grunt.option("runTag") || grunt.cdBuild.generateRunTag(moment()))
 		grunt.option("isCloudBuild", grunt.option("isCloudBuild") || false)
 		grunt.option("cloudFormationTemplate", grunt.option("cloudFormationTemplate") || { })
 		grunt.option("cloudFormationParameters", grunt.option("cloudFormationParameters") || [ ])
