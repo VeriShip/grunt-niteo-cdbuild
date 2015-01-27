@@ -2,6 +2,7 @@ Q = require 'q'
 _ = require 'lodash'
 path = require 'path'
 should = require 'should'
+moment = require 'moment'
 
 grunt = null
 
@@ -159,6 +160,21 @@ describe 'grunt.cdBuild', ->
 			result[1].should.equal '\n'
 			result[3].should.equal '\n'
 			result[5].should.equal '\n'
+
+	describe 'generateRunTag', ->
+
+		it 'should raise an exception if moment is null.', ->
+
+			(() -> grunt.cdBuild.generateRunTag(null)).should.throw()
+
+		it 'should raise an exception if moment is undefined.', ->
+
+			(() -> grunt.cdBuild.generateRunTag()).should.throw()
+
+		it 'should return only alphanumeric characters if COMPUTERNAME has non-alphanumeric characters in it.', ->
+			process.env.COMPUTERNAME = "some.computer-Name/1\\2_3$4"
+			m = moment()
+			grunt.cdBuild.generateRunTag(m).should.equal("CDBuild#{m.format("YYYYMMDDhhmmss")}somecomputerName1234")
 
 	describe 'envUp task',->
 
