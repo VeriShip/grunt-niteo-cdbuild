@@ -171,10 +171,17 @@ describe 'grunt.cdBuild', ->
 
 			(() -> grunt.cdBuild.generateRunTag()).should.throw()
 
-		it 'should return only alphanumeric characters if COMPUTERNAME has non-alphanumeric characters in it.', ->
-			process.env.COMPUTERNAME = "some.computer-Name/1\\2_3$4"
+		it 'should return only alphanumeric characters if USERNAME has non-alphanumeric characters in it.', ->
+			process.env =
+				USERNAME: "some.user-Name/1\\2_3$4"
 			m = moment()
-			grunt.cdBuild.generateRunTag(m).should.equal("CDBuild#{m.format("YYYYMMDDhhmmss")}somecomputerName1234")
+			grunt.cdBuild.generateRunTag(m).should.equal("CDBuild#{m.format("YYYYMMDDhhmmss")}someuserName1234")
+
+		it 'should return only alphanumeric characters if USER has non-alphanumeric characters in it.', ->
+			process.env =
+				USER: "some.user-Name/1\\2_3$45"
+			m = moment()
+			grunt.cdBuild.generateRunTag(m).should.equal("CDBuild#{m.format("YYYYMMDDhhmmss")}someuserName12345")
 
 	describe 'envUp task',->
 

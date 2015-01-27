@@ -100,7 +100,9 @@ grunt.cdbuild
 			generateRunTag: (m) ->
 				if !m?
 					throw 'You must define a moment.'
-				"CDBuild#{m.format("YYYYMMDDhhmmss")}#{(process.env.COMPUTERNAME).replace(/[\W_]+/g, "")}"
+
+				value = process.env.USER ? process.env.USERNAME
+				"CDBuild#{m.format("YYYYMMDDhhmmss")}#{value.replace(/[\W_]+/g, "")}"
 				
 *tasks*
 
