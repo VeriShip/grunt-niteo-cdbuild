@@ -1,6 +1,6 @@
 {
   "name": "grunt-niteo-cdbuild",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A grunt plugin to help facilitate continuous delivery workflows.",
   "main": "tasks/cdbuild.js",
   "scripts": {
