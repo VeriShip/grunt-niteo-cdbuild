@@ -1,22 +1,43 @@
+cdbuild.litcoffee
+-----------------
+
 	colors = require 'colors'
 
 	module.exports = (grunt) =>
+
+If the niteo namespace is not defined yet, we make sure to define it.  (Yes, [NiteoSoftware](https://github.com/NiteoSoftware) has more than one plugin that we use in our builds.)
 
 		if not grunt.niteo?
 			grunt.niteo = { }
 
 		grunt.niteo.cdBuild = 
+
+This property represents which of the five steps the build is currently in.  Further down the file, you'll see that this is set when the *Pre-Setup*,*Setup*,*Test*,*Teardown*, and *Post-Teardown* tasks are run.
+
 			currentStep: 0
+
+We need to be able to keep track of failures when we're in the *Setup* and *Test* steps.  This property is where we store them.
+
 			buildFailures: [ ]
+
+During development it was nice to see what tasks were being queued to run for each step.  That's where this method came from.
+
 			printQueue: (name) ->
 				if grunt.option(name).length > 0
 					grunt.log.ok "Queued to run: #{grunt.option(name)}"
 				else
 					grunt.log.ok "There are no registered tasks for this step.  Skipping..."
+
+
+This method handles the cleanup when the inevitable happens.  (When we encounter an error.)  Notice that it's queuing up the *report* task at the end.
+
 			queueTeardown: ->
 				grunt.task.clearQueue()
 				grunt.task.run 'teardown'
 				grunt.task.run 'report'
+
+This method aptly *handles* control flow when an error is encountered.  The error 'object' that is being stored contains the original error information along with the appropriate grunt failure method that would 'normally' be called if our extension wasn't switching things around.  You'll see that if the current step is 0 (*Pre-Setup*) or 4 (*Post-Teardown*) it immediatly calls the 'normal' grunt method.  That way grunt handles the error for us in those situations.  However, if the current step is 1 (*Setup*) or 2 (*Test*) and we're not forcing our way past warnings, the *Teardown* tasks are queued.
+
 			handler: (e, errcode, target, isWarning) ->
 				@buildFailures.push [e, errcode, target, isWarning ? false]
 				msg = String(e.message || e)
@@ -27,6 +48,9 @@
 
 				if (@currentStep == 1 or @currentStep == 2) and not (grunt.option('force') and isWarning)
 					@queueTeardown()
+
+This method is called at the end of the build to make sure that build failure happens if it needs to.  If there are any saved failure messages from previous steps, this method cycles through them and let's grunt handle them.
+
 			report: ->
 				if @buildFailures.length > 0
 					grunt.log.error "There were issues within the run:"
@@ -43,6 +67,9 @@
 						failure[2](failure[0], failure[1])
 				else
 					grunt.log.ok "There were no failures within the run.  Success"
+
+We place the actual task code in these methods to make them easier to test.
+
 			tasks:
 				preSetup: ->
 					grunt.niteo.cdBuild.currentStep = 0
@@ -76,13 +103,16 @@
 					grunt.warn = grunt.fail._newWarn
 					grunt.log.ok "Manipulating grunt to work with cdBuild..."
 
-		#Setup error handling
+Here we make sure that we save the old `grunt.fail.fatal` and `grunt.fail.warn` implementations.  Also, we define the new implementations that will be used when errors are encountered.
+
 		grunt.fail._oldFatal = grunt.fail.fatal
 		grunt.fail._newFatal = (e, errcode) ->
 			grunt.niteo.cdBuild.handler(e, errcode, grunt.fail._oldFatal)
 		grunt.fail._oldWarn = grunt.fail.warn
 		grunt.fail._newWarn = (e, errcode) ->
 			grunt.niteo.cdBuild.handler(e, errcode, grunt.fail._oldWarn, true)
+
+The definitions of the tasks
 
 		grunt.option 'preSetupTasks', [ ]
 		grunt.option 'setupTasks', [ ]
