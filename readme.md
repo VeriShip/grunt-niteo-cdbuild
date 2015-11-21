@@ -1,7 +1,7 @@
 grunt-niteo-cdbuild (It's FUN!)
 ===================
 [![Build status](https://ci.appveyor.com/api/projects/status/2momxn2atsvys1ht/branch/master?svg=true)](https://ci.appveyor.com/project/NiteoBuildBot/grunt-niteo-cdbuild/branch/master)
-[![Build Status](https://travis-ci.org/NiteoSoftware/grunt-niteo-cdbuild.svg?branch=master)](https://travis-ci.org/NiteoSoftware/grunt-niteo-cdbuild)
+[![Build Status](https://travis-ci.org/VeriShip/grunt-niteo-cdbuild.svg?branch=master)](https://travis-ci.org/VeriShip/grunt-niteo-cdbuild)
 
 This is a grunt extension that we use with our continuously deployments/integrations.
 

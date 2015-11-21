@@ -4,11 +4,11 @@
   "description": "A grunt plugin to help facilitate continuous delivery workflows.",
   "main": "tasks/cdbuild.js",
   "scripts": {
-    "test": "grunt"
+    "build": "grunt"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NiteoSoftware/grunt-niteo-cdbuild.git"
+    "url": "https://github.com/VeriShip/grunt-niteo-cdbuild.git"
   },
   "engines": {
     "node": ">0.8.0"
@@ -17,6 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-coffee": "^0.12.0",
     "grunt-mocha-test": "^0.12.4",
     "mocha": "^2.1.0",
